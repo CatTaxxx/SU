@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Simple Audio & Video Previewer</title>
+<style>
+  body {
+    font-family: Arial, sans-serif;
+    background: #222;
+    color: #eee;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 2rem;
+  }
+  input[type="file"] {
+    margin-bottom: 1rem;
+  }
+  video, audio {
+    max-width: 90vw;
+    max-height: 300px;
+    margin-top: 1rem;
+    border: 2px solid #555;
+    border-radius: 8px;
+    background: #000;
+  }
+</style>
+</head>
+<body>
+  <h1>Drag & Drop or Select Audio/Video Files</h1>
+  <input type="file" id="fileInput" accept="audio/*,video/*" />
+  <div id="preview"></div>
+
+  <script>
+    const fileInput = document.getElementById('fileInput');
+    const preview = document.getElementById('preview');
+
+    fileInput.addEventListener('change', () => {
+      preview.innerHTML = ''; // clear previous previews
+      const files = fileInput.files;
+
+      for (const file of files) {
+        const url = URL.createObjectURL(file);
+        let element;
+
+        if (file.type.startsWith('video/')) {
+          element = document.createElement('video');
+          element.controls = true;
+          element.src = url;
+        } else if (file.type.startsWith('audio/')) {
+          element = document.createElement('audio');
+          element.controls = true;
+          element.src = url;
+        } else {
+          // Not audio or video, ignore
+          continue;
+        }
+        preview.appendChild(element);
+      }
+    });
+  </script>
+</body>
+</html>
